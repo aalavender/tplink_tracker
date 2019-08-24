@@ -80,11 +80,10 @@ class TplinkDeviceScanner(DeviceScanner):
         get_Text = requests.post(url=url_login, json=post_data).text
         get_data = json.loads(get_Text)
         _LOGGER.info('login response:' + get_Text)
-        self.stok = get_data['stok']
-        _LOGGER.info(self.stok)
-        if (self.stok == ''):
-            return false
-        return True
+        if 'stok' not in get_data.keys():
+            _LOGGER.error("路由器登陆失败，很肯能密码错误")
+        else:
+            self.stok = get_data['stok']
 
     def _update_info(self):
         """Ensure the information from the TP-Link router is up to date.
