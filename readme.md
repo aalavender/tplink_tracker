@@ -42,5 +42,5 @@ device_tracker:
 
 # 前台界面
 
-![avatar](https://github.com/aalavender/device_tracker/blob/master/1.PNG)
+![avatar](https://github.com/aalavender/tplink_tracker/blob/master/1.PNG)
 
