@@ -1,0 +1,8 @@
+{
+  "domain": "tplink_tracker",
+  "name": "tplink tracker",
+  "documentation": "https://github.com/aalavender/tplink_tracker/blob/master/README.md",
+  "dependencies": [],
+  "codeowners": ["@aalavender"],
+  "requirements": ["requests"]
+}
