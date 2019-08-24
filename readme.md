@@ -6,7 +6,7 @@ Device_Tracer https://www.home-assistant.io/components/device_tracker/ 主要的
 判断是否在家比较靠谱的就是通过路由器拉取在线的mac地址列表，然后与事先定义好的 known_devices.yaml进行比较，
 比较遗憾的是，tp-link没有通用device_tracker的官方插件，好在万能论坛有人实现了 https://bbs.hassbian.com/thread-4737-1-1.html
 
-由于ha升级较快，在0.96版本中已经需要稍作修改才能用，所以本人稍作修改，github了一把。
+由于ha升级较快，在0.96版本中已经需要稍作修改才能用，所以本人稍作修改，github了一把，修复了密码错误有提示的坑，如果密码末尾多个空格确实坑
 
 # 安装
 放入 <config directory>/custom_components/ 目录
