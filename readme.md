@@ -6,7 +6,9 @@ Device_Tracer https://www.home-assistant.io/components/device_tracker/ 主要的
 判断是否在家比较靠谱的就是通过路由器拉取在线的mac地址列表，然后与事先定义好的 known_devices.yaml进行比较，
 比较遗憾的是，tp-link没有通用device_tracker的官方插件，好在万能论坛有人实现了 https://bbs.hassbian.com/thread-4737-1-1.html
 
-由于ha升级较快，在0.96版本中已经需要稍作修改才能用，所以本人稍作修改，github了一把，修复了密码错误有提示的坑，如果密码末尾多个空格确实坑
+由于ha升级较快，在0.96版本中已经需要稍作修改才能用，所以本人稍作修改，github了一把，
+1，修复了密码错误有提示的坑，如果密码末尾多个空格确实坑
+2，修复了判断token超时的坑，导致运行运行时间长了就登陆失败
 
 # 安装
 放入 <config directory>/custom_components/ 目录
@@ -33,7 +35,7 @@ device_tracker:
 | username | 没啥好说的 |
 | password | 没啥好说的 | 
 | interval_seconds | 两次扫描在线设备的时间间隔（秒） | 
-| consider_home | 当设备不在线多长时间(秒)后，判断为离家 | 
+| consider_home | 当设备不在线多长时间(秒)后，判断为离家，注意有时候是路由器上更新不及时 | 
 | track_new_devices | 在路由器上自动发现known_devices.yaml定义以外的设备，是否要追踪，这个最好false，否则家里的在线设备阿狗阿猫都上来了） | 
 | hide_if_away | 判断为离家后，是否隐藏，这个默认为false | 
 

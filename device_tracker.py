@@ -94,7 +94,6 @@ class TplinkDeviceScanner(DeviceScanner):
         online_host = {"hosts_info": {"table": "online_host"}, "method": "get"}
         url_info = ('http://{}/stok={}/ds').format(self.host, self.stok)
         host_json = requests.post(url=url_info, json=online_host).json()
-        _LOGGER.info(host_json)
         try:
             if host_json.get('error_code') == 0:
                 info = host_json['hosts_info']['online_host']
