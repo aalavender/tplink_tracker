@@ -59,19 +59,16 @@ class TplinkDeviceScanner(DeviceScanner):
     def scan_devices(self):
         """Scan for new devices and return a list with found device IDs."""
         self._update_info()
-        #        self._log_out()
         return self.last_results
 
     # pylint: disable=no-self-use
     def get_device_name(self, device):
-        """Get the firmware doesn't save the name of the wireless device.
-
-        """
+        """Get the firmware doesn't save the name of the wireless device."""
         return None
 
     def _get_auth_tokens(self):
         """Retrieve auth tokens from the router."""
-        _LOGGER.info("Retrieving auth tokens...")
+        _LOGGER.info("Retrieving tp-link auth tokens...")
 
         url_login = 'http://{}/'.format(self.host)
         Y_passwd = '{}'.format(self.password)
@@ -79,7 +76,7 @@ class TplinkDeviceScanner(DeviceScanner):
         post_data = {'login': {'password': En_passwd}, 'method': 'do'}
         get_Text = requests.post(url=url_login, json=post_data).text
         get_data = json.loads(get_Text)
-        _LOGGER.info('login response:' + get_Text)
+
         if 'stok' not in get_data.keys():
             _LOGGER.error("路由器登陆失败，很肯能密码错误")
         else:
@@ -87,8 +84,7 @@ class TplinkDeviceScanner(DeviceScanner):
 
     def _update_info(self):
         """Ensure the information from the TP-Link router is up to date.
-
-        Return boolean if scanning successful.
+            Return boolean if scanning successful.
         """
         if (self.stok == ''):
             self._get_auth_tokens()
@@ -98,28 +94,26 @@ class TplinkDeviceScanner(DeviceScanner):
         online_host = {"hosts_info": {"table": "online_host"}, "method": "get"}
         url_info = ('http://{}/stok={}/ds').format(self.host, self.stok)
         host_json = requests.post(url=url_info, json=online_host).json()
+        _LOGGER.info(host_json)
         try:
             if host_json.get('error_code') == 0:
                 info = host_json['hosts_info']['online_host']
                 for i in list(range(len(info))):
                     result.append(list(info[i].values())[0]['mac'])
+                if result:
+                    self.last_results = [mac.replace("-", ":") for mac in result]
+                    return True
             else:
-                if host_json.get('errorcode') == 'timeout':
+                if host_json.get('error_code') == 'timeout':
+                    # auth_tokens已过期，需要重新登陆
                     _LOGGER.info("Token timed out. Relogging on next scan")
                     self.stok = ''
-                    return False
-                _LOGGER.error(
-                    "An unknown error happened while fetching data")
-                return False
+                else:
+                    _LOGGER.error("An unknown error happened while fetching data with error_code: " +
+                                  host_json.get('error_code'))
+
         except ValueError:
             _LOGGER.error("Router didn't respond with JSON. Check if credentials are correct")
-            return False
-
-        if result:
-            #            _LOGGER.info(result)
-            #_LOGGER.info("Loading done.")
-            self.last_results = [mac.replace("-", ":") for mac in result]
-            return True
 
         return False
 
@@ -163,10 +157,5 @@ class Encrypt:
                     l = ord(a[p])
                     n = ord(b[p])
             e += c[(l ^ n) % k]
-        try:
-            if self.Flat == 0:
-                _LOGGER.info(e)
-            else:
-                return e
-        except NameError:
-            pass
+
+        return e
