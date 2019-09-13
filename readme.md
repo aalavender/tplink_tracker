@@ -35,7 +35,7 @@ device_tracker:
 | username | 没啥好说的 |
 | password | 没啥好说的 | 
 | interval_seconds | 两次扫描在线设备的时间间隔（秒） | 
-| consider_home | 当设备不在线多长时间(秒)后，判断为离家，注意有时候是路由器上更新不及时 | 
+| consider_home | 当设备不在线多长时间(秒)后，判断为离家，注意有时候是路由器上更新不及时，这个可以在路由器上禁用设备来测试准确时间 | 
 | track_new_devices | 在路由器上自动发现known_devices.yaml定义以外的设备，是否要追踪，这个最好false，否则家里的在线设备阿狗阿猫都上来了） | 
 | hide_if_away | 判断为离家后，是否隐藏，这个默认为false | 
 
