@@ -103,12 +103,8 @@ class TplinkDeviceScanner(DeviceScanner):
                     self.last_results = [mac.replace("-", ":") for mac in result]
                     return True
             else:
-                if host_json.get('error_code') == 'timeout':
-                    # auth_tokens已过期，需要重新登陆
-                    _LOGGER.info("Token timed out. Relogging on next scan")
-                    self.stok = ''
-                else:
-                    _LOGGER.error("An unknown error happened while fetching data with error_code: {0}".format(host_json.get('error_code')))
+                self.stok = ''
+                _LOGGER.error("An unknown error happened while fetching data with error_code: {0}".format(host_json.get('error_code')))
 
         except ValueError:
             _LOGGER.error("Router didn't respond with JSON. Check if credentials are correct")
